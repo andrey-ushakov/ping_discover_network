@@ -7,4 +7,4 @@
 
 library ping_discover_network;
 
-export 'src/network_discover.dart';
+export 'src/network_analyzer.dart';
