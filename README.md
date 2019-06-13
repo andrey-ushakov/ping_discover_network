@@ -1,12 +1,12 @@
 # ping_discover_network
 
-Dart/Flutter library that allows to ping IP subnet and therefore dicover network devices.
+Dart/Flutter library that allows to ping IP subnet and therefore discover network devices.
 
 Could be used to find printers, for example, on port 9100 and other services.
 
 ## Getting Started
 
-Discover available network devices in a given subnet on a given port
+Discover available network devices in a given subnet on a given port:
 
 ```dart
 import 'package:ping_discover_network/ping_discover_network.dart';
@@ -20,7 +20,7 @@ final stream = NetworkAnalyzer.discover('192.168.0', 9100);
   }).onDone(() => print('Finish'));
 ```
 
-Discover available network devices in a given subnet on a given port range
+Discover available network devices in a given subnet on a given port range:
 
 ```dart
 import 'package:ping_discover_network/ping_discover_network.dart';
