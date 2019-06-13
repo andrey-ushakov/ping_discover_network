@@ -23,7 +23,7 @@ final stream = NetworkAnalyzer.discover('192.168.0', 9100);
 Discover available network devices in a given subnet on a given port range
 
 ```dart
-//import 'package:ping_discover_network/ping_discover_network.dart';
+import 'package:ping_discover_network/ping_discover_network.dart';
 
 void checkPortRange(String subnet, int fromPort, int toPort) {
   if (fromPort > toPort) {
