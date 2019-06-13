@@ -42,7 +42,24 @@ class NetworkAnalyzer {
         socket.close();
         out.sink.add(NetworkAddress(host, true));
       }).catchError((dynamic e) {
-        out.sink.add(NetworkAddress(host, false));
+        if (!(e is SocketException)) {
+          throw e;
+        }
+        // 13: Connection failed (OS Error: Permission denied)
+        // 49: Bind failed (OS Error: Can't assign requested address)
+        // 61: OS Error: Connection refused
+        // 64: Connection failed (OS Error: Host is down)
+        // 65: No route to host
+        // <empty>: SocketException: Connection timed out
+        final errorCodes = [13, 49, 61, 64, 65];
+
+        // Check if connection timed out or one of the predefined errors
+        if (e.osError == null || errorCodes.contains(e.osError.errorCode)) {
+          out.sink.add(NetworkAddress(host, false));
+        } else {
+          // 23,24: Too many open files in system
+          throw e;
+        }
       });
     }
 
