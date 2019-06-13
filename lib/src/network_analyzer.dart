@@ -11,33 +11,32 @@ class NetworkAnalyzer {
   // NetworkAnalyzer(this.subnet);
   // final String subnet;
 
-  static Future<Socket> _ping(String host, int port) {
-    return Socket.connect(
-      host,
-      port,
-      timeout: Duration(seconds: 5),
-    ).then((socket) {
+  static Future<Socket> _ping(String host, int port, Duration timeout) {
+    return Socket.connect(host, port, timeout: timeout).then((socket) {
       return socket;
     });
   }
 
-  // TODO add duration
-  static void discover(String subnet, int port) {
+  static void discover(
+    String subnet,
+    int port, {
+    Duration timeout = const Duration(seconds: 5),
+  }) {
     // TODO : validate subnet & port
-
     final futures = <Future<Socket>>[];
 
     for (int i = 0; i < 256; ++i) {
       final host = '$subnet.$i';
 
-      final Future<Socket> f = _ping(host, port);
+      final Future<Socket> f = _ping(host, port, timeout);
+      futures.add(f);
+
       f.then((socket) {
         // TODO emit
         print('********** Found on $host');
         socket.destroy();
         socket.close();
       }).catchError((dynamic e) {});
-      futures.add(f);
     }
 
     Future.wait<Socket>(futures).then((sockets) {
