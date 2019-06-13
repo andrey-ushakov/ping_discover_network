@@ -50,8 +50,11 @@ class NetworkAnalyzer {
         // 61: OS Error: Connection refused
         // 64: Connection failed (OS Error: Host is down)
         // 65: No route to host
+        // 101: Network is unreachable
+        // 111: Connection refused
+        // 113: No route to host
         // <empty>: SocketException: Connection timed out
-        final errorCodes = [13, 49, 61, 64, 65];
+        final errorCodes = [13, 49, 61, 64, 65, 101, 111, 113];
 
         // Check if connection timed out or one of the predefined errors
         if (e.osError == null || errorCodes.contains(e.osError.errorCode)) {
