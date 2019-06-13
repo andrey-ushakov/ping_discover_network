@@ -8,6 +8,14 @@
 import 'dart:async';
 import 'dart:io';
 
+///
+class NetworkAddress {
+  NetworkAddress(this.ip, this.exists);
+  bool exists;
+  String ip;
+}
+
+///
 class NetworkAnalyzer {
   static Future<Socket> _ping(String host, int port, Duration timeout) {
     return Socket.connect(host, port, timeout: timeout).then((socket) {
@@ -15,12 +23,12 @@ class NetworkAnalyzer {
     });
   }
 
-  static Stream<String> discover(
+  static Stream<NetworkAddress> discover(
     String subnet,
     int port, {
     Duration timeout = const Duration(seconds: 5),
   }) {
-    final out = StreamController<String>();
+    final out = StreamController<NetworkAddress>();
     // TODO : validate subnet & port
     final futures = <Future<Socket>>[];
 
@@ -32,15 +40,15 @@ class NetworkAnalyzer {
       f.then((socket) {
         socket.destroy();
         socket.close();
-        out.sink.add('!!!!!!!!!!!!!!!!!!!!!!!!!! $host');
+        out.sink.add(NetworkAddress(host, true));
       }).catchError((dynamic e) {
-        out.sink.add('$host');
+        out.sink.add(NetworkAddress(host, false));
       });
     }
 
     Future.wait<Socket>(futures)
-        .then((sockets) => out.sink.add('==> Finished'))
-        .catchError((dynamic e) => out.sink.add('==> Finished'));
+        .then<void>((sockets) => out.close())
+        .catchError((dynamic e) => out.close());
 
     return out.stream;
   }

@@ -7,9 +7,11 @@
 import 'package:ping_discover_network/ping_discover_network.dart';
 
 void main() {
-  final Stream<String> stream = NetworkAnalyzer.discover('192.168.0', 9100);
+  final stream = NetworkAnalyzer.discover('192.168.0', 80);
 
-  stream.listen((String addr) {
-    print('$addr');
-  });
+  stream.listen((NetworkAddress addr) {
+    if (addr.exists) {
+      print('Found device: ${addr.ip}');
+    }
+  }).onDone(() => print('Finish'));
 }
