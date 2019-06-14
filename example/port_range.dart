@@ -27,5 +27,5 @@ void checkPortRange(String subnet, int fromPort, int toPort) {
 
 /// Discover available network devices in a given subnet on a given port range
 void main() {
-  checkPortRange('192.168.0', 400, 410);
+  checkPortRange('192.168.0', 80, 88);
 }

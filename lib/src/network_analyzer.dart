@@ -32,7 +32,7 @@ class NetworkAnalyzer {
     // TODO : validate subnet & port
     final futures = <Future<Socket>>[];
 
-    for (int i = 0; i < 256; ++i) {
+    for (int i = 1; i < 256; ++i) {
       final host = '$subnet.$i';
       final Future<Socket> f = _ping(host, port, timeout);
       futures.add(f);
