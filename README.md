@@ -4,7 +4,7 @@
 
 Could be used to find printers (for example, on port 9100) and any other devices and services in local network.
 
-The device should be connected to a Wi-Fi network. [wifi package](https://pub.dev/packages/wifi) allows to get  local IP address / network subnet. 
+The device should be connected to a Wi-Fi network. [wifi package](https://pub.dev/packages/wifi) allows to get the local IP address / network subnet. 
 
 The library tested on both, Android and iOS platforms.
 
@@ -19,8 +19,8 @@ import 'package:ping_discover_network/ping_discover_network.dart';
 
 final stream = NetworkAnalyzer.discover('192.168.0', 9100);
 
-  stream.listen((NetworkAddress addr) {
-    if (addr.exists) {
+stream.listen((NetworkAddress addr) {
+  if (addr.exists) {
       print('Found device: ${addr.ip}');
     }
   }).onDone(() => print('Finish'));
@@ -36,18 +36,16 @@ void checkPortRange(String subnet, int fromPort, int toPort) {
     return;
   }
 
-  print('port $fromPort');
+  print('port ${fromPort}');
 
   final stream = NetworkAnalyzer.discover(subnet, fromPort);
 
   stream.listen((NetworkAddress addr) {
     if (addr.exists) {
-      print('Found device: ${addr.ip}:$fromPort');
+      print('Found device: ${addr.ip}:${fromPort}');
     }
   }).onDone(() {
-    if (fromPort + 1 <= toPort) {
-      checkPortRange(subnet, fromPort + 1, toPort);
-    }
+    checkPortRange(subnet, fromPort + 1, toPort);
   });
 }
 
@@ -55,4 +53,5 @@ checkPortRange('192.168.0', 400, 410);
 ```
 
 ## Todo
-* Add Flutter app example
+* Add Flutter app example: get the local ip and ping the subnet
+* Ping addresses one by one with a short timeout

@@ -8,14 +8,16 @@
 import 'dart:async';
 import 'dart:io';
 
+/// [NetworkAnalyzer] class returns instances of [NetworkAddress].
 ///
+/// Found ip addresses will have [exists] == true field.
 class NetworkAddress {
   NetworkAddress(this.ip, this.exists);
   bool exists;
   String ip;
 }
 
-///
+/// Pings a given subnet (xxx.xxx.xxx) on a given port using [discover] method.
 class NetworkAnalyzer {
   static Future<Socket> _ping(String host, int port, Duration timeout) {
     return Socket.connect(host, port, timeout: timeout).then((socket) {
@@ -23,13 +25,18 @@ class NetworkAnalyzer {
     });
   }
 
+  /// Pings a given [subnet] (xxx.xxx.xxx) on a given [port].
   static Stream<NetworkAddress> discover(
     String subnet,
     int port, {
     Duration timeout = const Duration(seconds: 5),
   }) {
+    if (port < 1 || port > 65535) {
+      throw 'Incorrect port';
+    }
+    // TODO : validate subnet
+
     final out = StreamController<NetworkAddress>();
-    // TODO : validate subnet & port
     final futures = <Future<Socket>>[];
 
     for (int i = 1; i < 256; ++i) {

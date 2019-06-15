@@ -1,6 +1,6 @@
 name: ping_discover_network
 description: The library allows to ping IP subnet and therefore discover network devices. Could be used to find printers (for example, on port 9100) and any other devices and services in local network..
-version: 0.0.2
+version: 0.1.0
 author: Andrey Ushakov <flutter@tablemi.com>
 homepage: https://github.com/andrey-ushakov/ping_discover_network
 

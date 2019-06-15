@@ -19,9 +19,7 @@ void checkPortRange(String subnet, int fromPort, int toPort) {
       print('Found device: ${addr.ip}:$fromPort');
     }
   }).onDone(() {
-    if (fromPort + 1 <= toPort) {
-      checkPortRange(subnet, fromPort + 1, toPort);
-    }
+    checkPortRange(subnet, fromPort + 1, toPort);
   });
 }
 
