@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   ping_discover_network:
     path: ../../
+  wifi: ^0.1.5
 
 dev_dependencies:
   flutter_test:
