@@ -53,5 +53,5 @@ checkPortRange('192.168.0', 400, 410);
 ```
 
 ## Todo
-* Add Flutter app example: get the local ip and ping the subnet
+* ~~Add Flutter app example: get the local ip and ping the subnet~~
 * Ping addresses one by one with a short timeout
