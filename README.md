@@ -14,6 +14,8 @@ The library tested on both, Android and iOS platforms.
 
 ## Getting Started
 
+*Check complete examples in /example folder.*
+
 Discover available network devices in a given subnet on a given port:
 
 ```dart
@@ -70,7 +72,3 @@ void checkPortRange(String subnet, int fromPort, int toPort) {
 
 checkPortRange('192.168.0', 400, 410);
 ```
-
-## Todo
-* ~~Add Flutter app example: get the local ip and ping the subnet~~
-* Ping addresses one by one with a short timeout

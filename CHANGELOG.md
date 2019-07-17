@@ -1,3 +1,6 @@
+## [0.1.3]
+* Ping ip addresses one by one
+
 ## [0.1.2]
 * Added Flutter example: get the local ip and ping the subnet
 
