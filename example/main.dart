@@ -7,12 +7,17 @@
 import 'package:ping_discover_network/ping_discover_network.dart';
 
 /// Discover available network devices in a given subnet on a given port
-void main() {
+void main() async {
   const port = 80;
-  final stream = NetworkAnalyzer.discover('192.168.0', port);
+  final stream = NetworkAnalyzer.discover(
+    '192.168.0',
+    port,
+    timeout: Duration(milliseconds: 400),
+  );
 
   int found = 0;
   stream.listen((NetworkAddress addr) {
+    print('${addr.ip}:$port');
     if (addr.exists) {
       found++;
       print('Found device: ${addr.ip}:$port');

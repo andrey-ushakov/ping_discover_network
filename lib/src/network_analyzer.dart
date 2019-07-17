@@ -19,38 +19,28 @@ class NetworkAddress {
 
 /// Pings a given subnet (xxx.xxx.xxx) on a given port using [discover] method.
 class NetworkAnalyzer {
-  static Future<Socket> _ping(String host, int port, Duration timeout) {
-    return Socket.connect(host, port, timeout: timeout).then((socket) {
-      return socket;
-    });
-  }
-
   /// Pings a given [subnet] (xxx.xxx.xxx) on a given [port].
   static Stream<NetworkAddress> discover(
     String subnet,
     int port, {
-    Duration timeout = const Duration(seconds: 5),
-  }) {
+    Duration timeout = const Duration(milliseconds: 400),
+  }) async* {
     if (port < 1 || port > 65535) {
       throw 'Incorrect port';
     }
     // TODO : validate subnet
 
-    final out = StreamController<NetworkAddress>();
-    final futures = <Future<Socket>>[];
-
     for (int i = 1; i < 256; ++i) {
       final host = '$subnet.$i';
-      final Future<Socket> f = _ping(host, port, timeout);
-      futures.add(f);
 
-      f.then((socket) {
-        socket.destroy();
-        socket.close();
-        out.sink.add(NetworkAddress(host, true));
-      }).catchError((dynamic e) {
+      try {
+        final Socket s = await Socket.connect(host, port, timeout: timeout);
+        s.destroy();
+        s.close();
+        yield NetworkAddress(host, true);
+      } catch (e) {
         if (!(e is SocketException)) {
-          throw e;
+          rethrow;
         }
         // 13: Connection failed (OS Error: Permission denied)
         // 49: Bind failed (OS Error: Can't assign requested address)
@@ -63,20 +53,14 @@ class NetworkAnalyzer {
         // <empty>: SocketException: Connection timed out
         final errorCodes = [13, 49, 61, 64, 65, 101, 111, 113];
 
-        // Check if connection timed out or one of the predefined errors
+        // Check if connection timed out or we got one of predefined errors
         if (e.osError == null || errorCodes.contains(e.osError.errorCode)) {
-          out.sink.add(NetworkAddress(host, false));
+          yield NetworkAddress(host, false);
         } else {
           // 23,24: Too many open files in system
-          throw e;
+          rethrow;
         }
-      });
+      }
     }
-
-    Future.wait<Socket>(futures)
-        .then<void>((sockets) => out.close())
-        .catchError((dynamic e) => out.close());
-
-    return out.stream;
   }
 }
