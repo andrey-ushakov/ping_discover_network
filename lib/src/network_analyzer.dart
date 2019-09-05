@@ -44,32 +44,16 @@ class NetworkAnalyzer {
         if (!(e is SocketException)) {
           rethrow;
         }
-        // 13: Connection failed (OS Error: Permission denied)
-        // 49: Bind failed (OS Error: Can't assign requested address)
-        // 61: OS Error: Connection refused
-        // 64: Connection failed (OS Error: Host is down)
-        // 65: No route to host
-        // 101: Network is unreachable
-        // 111: Connection refused
-        // 113: No route to host
-        // <empty>: SocketException: Connection timed out
-        final errorCodes = [13, 49, 61, 64, 65, 101, 111, 113];
 
         // Check if connection timed out or we got one of predefined errors
-        if (e.osError == null || errorCodes.contains(e.osError.errorCode)) {
+        if (e.osError == null || _errorCodes.contains(e.osError.errorCode)) {
           yield NetworkAddress(host, false);
         } else {
-          // 23,24: Too many open files in system
+          // Error 23,24: Too many open files in system
           rethrow;
         }
       }
     }
-  }
-
-  static Future<Socket> _ping(String host, int port, Duration timeout) {
-    return Socket.connect(host, port, timeout: timeout).then((socket) {
-      return socket;
-    });
   }
 
   /// Pings a given [subnet] (xxx.xxx.xxx) on a given [port].
@@ -100,22 +84,11 @@ class NetworkAnalyzer {
           throw e;
         }
 
-        // 13: Connection failed (OS Error: Permission denied)
-        // 49: Bind failed (OS Error: Can't assign requested address)
-        // 61: OS Error: Connection refused
-        // 64: Connection failed (OS Error: Host is down)
-        // 65: No route to host
-        // 101: Network is unreachable
-        // 111: Connection refused
-        // 113: No route to host
-        // <empty>: SocketException: Connection timed out
-        final errorCodes = [13, 49, 61, 64, 65, 101, 111, 113];
-
         // Check if connection timed out or we got one of predefined errors
-        if (e.osError == null || errorCodes.contains(e.osError.errorCode)) {
+        if (e.osError == null || _errorCodes.contains(e.osError.errorCode)) {
           out.sink.add(NetworkAddress(host, false));
         } else {
-          // 23,24: Too many open files in system
+          // Error 23,24: Too many open files in system
           throw e;
         }
       });
@@ -127,4 +100,21 @@ class NetworkAnalyzer {
 
     return out.stream;
   }
+
+  static Future<Socket> _ping(String host, int port, Duration timeout) {
+    return Socket.connect(host, port, timeout: timeout).then((socket) {
+      return socket;
+    });
+  }
+
+  // 13: Connection failed (OS Error: Permission denied)
+  // 49: Bind failed (OS Error: Can't assign requested address)
+  // 61: OS Error: Connection refused
+  // 64: Connection failed (OS Error: Host is down)
+  // 65: No route to host
+  // 101: Network is unreachable
+  // 111: Connection refused
+  // 113: No route to host
+  // <empty>: SocketException: Connection timed out
+  static final _errorCodes = [13, 49, 61, 64, 65, 101, 111, 113];
 }
