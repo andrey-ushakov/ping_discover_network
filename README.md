@@ -21,13 +21,22 @@ Discover available network devices in a given subnet on a given port:
 ```dart
 import 'package:ping_discover_network/ping_discover_network.dart';
 
-final stream = NetworkAnalyzer.discover('192.168.0', 9100);
+// NetworkAnalyzer.discover pings PORT:IP one by one according to timeout.
+// NetworkAnalyzer.discover2 pings all PORT:IP addresses at once.
 
+const port = 80;
+final stream = NetworkAnalyzer.discover2(
+  '192.168.0', port,
+  timeout: Duration(milliseconds: 5000),
+);
+
+int found = 0;
 stream.listen((NetworkAddress addr) {
   if (addr.exists) {
-      print('Found device: ${addr.ip}');
-    }
-  }).onDone(() => print('Finish'));
+    found++;
+    print('Found device: ${addr.ip}:$port');
+  }
+}).onDone(() => print('Finish. Found $found device(s)'));
 ```
 
 Get local ip and discover network devices:
@@ -39,7 +48,7 @@ final String ip = await Wifi.ip;
 final String subnet = ip.substring(0, ip.lastIndexOf('.'));
 final int port = 80;
 
-final stream = NetworkAnalyzer.discover(subnet, port);
+final stream = NetworkAnalyzer.discover2(subnet, port);
 stream.listen((NetworkAddress addr) {
   if (addr.exists) {
     print('Found device: ${addr.ip}');
@@ -59,7 +68,7 @@ void checkPortRange(String subnet, int fromPort, int toPort) {
 
   print('port ${fromPort}');
 
-  final stream = NetworkAnalyzer.discover(subnet, fromPort);
+  final stream = NetworkAnalyzer.discover2(subnet, fromPort);
 
   stream.listen((NetworkAddress addr) {
     if (addr.exists) {

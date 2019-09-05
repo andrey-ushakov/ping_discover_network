@@ -8,7 +8,7 @@ import 'package:ping_discover_network/ping_discover_network.dart';
 
 /// Discover available network devices in a given subnet on a given port
 void main() async {
-  // NetworkAnalyzer.discover pings PORT:IP one by according to timeout.
+  // NetworkAnalyzer.discover pings PORT:IP one by one according to timeout.
   // NetworkAnalyzer.discover2 pings all PORT:IP addresses at once.
 
   const port = 80;

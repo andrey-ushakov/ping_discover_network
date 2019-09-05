@@ -1,3 +1,6 @@
+## [0.2.0]
+* Two pinging methods: ping ip addresses one by one OR all at once.
+
 ## [0.1.3]
 * Ping ip addresses one by one
 
