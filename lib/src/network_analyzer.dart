@@ -38,7 +38,6 @@ class NetworkAnalyzer {
       try {
         final Socket s = await Socket.connect(host, port, timeout: timeout);
         s.destroy();
-        s.close();
         yield NetworkAddress(host, true);
       } catch (e) {
         if (!(e is SocketException)) {
@@ -77,7 +76,6 @@ class NetworkAnalyzer {
       futures.add(f);
       f.then((socket) {
         socket.destroy();
-        socket.close();
         out.sink.add(NetworkAddress(host, true));
       }).catchError((dynamic e) {
         if (!(e is SocketException)) {
