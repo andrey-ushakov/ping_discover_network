@@ -1,3 +1,8 @@
+#Changelog
+
+## [1.0.0]
+* Null safety.
+
 ## [0.2.0]
 * Two pinging methods: ping ip addresses one by one OR all at once.
 

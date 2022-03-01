@@ -8,11 +8,14 @@
 import 'dart:async';
 import 'dart:io';
 
+// ignore_for_file: avoid_classes_with_only_static_members
+
 /// [NetworkAnalyzer] class returns instances of [NetworkAddress].
 ///
 /// Found ip addresses will have [exists] == true field.
 class NetworkAddress {
   NetworkAddress(this.ip, this.exists);
+
   bool exists;
   String ip;
 }
@@ -45,7 +48,7 @@ class NetworkAnalyzer {
         }
 
         // Check if connection timed out or we got one of predefined errors
-        if (e.osError == null || _errorCodes.contains(e.osError.errorCode)) {
+        if (e.osError == null || _errorCodes.contains(e.osError!.errorCode)) {
           yield NetworkAddress(host, false);
         } else {
           // Error 23,24: Too many open files in system
@@ -83,7 +86,7 @@ class NetworkAnalyzer {
         }
 
         // Check if connection timed out or we got one of predefined errors
-        if (e.osError == null || _errorCodes.contains(e.osError.errorCode)) {
+        if (e.osError == null || _errorCodes.contains(e.osError!.errorCode)) {
           out.sink.add(NetworkAddress(host, false));
         } else {
           // Error 23,24: Too many open files in system
@@ -92,9 +95,7 @@ class NetworkAnalyzer {
       });
     }
 
-    Future.wait<Socket>(futures)
-        .then<void>((sockets) => out.close())
-        .catchError((dynamic e) => out.close());
+    Future.wait<Socket>(futures).then<void>((sockets) => out.close()).catchError((dynamic e) => out.close());
 
     return out.stream;
   }
