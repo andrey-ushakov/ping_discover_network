@@ -1,5 +1,7 @@
 # ping_discover_network
 
+Changed to null safety.
+
 ![Pub](https://img.shields.io/pub/v/ping_discover_network.svg)
 
 [Dart](https://dart.dev)/[Flutter](https://flutter.dev) library that allows to ping IP subnet and discover network devices.

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
 
 void main() => runApp(MyApp());
@@ -39,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     String ip;
     try {
-      ip = await _getLocalIpAddress();
+      ip = (await NetworkInfo().getWifiIP())!;
       print('local ip:\t$ip');
     } catch (e) {
       final snackBar = SnackBar(content: Text('WiFi is not connected', textAlign: TextAlign.center));
