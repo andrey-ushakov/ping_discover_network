@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ping_discover_network/ping_discover_network.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:ping_discover_network/ping_discover_network.dart';
 
 void main() => runApp(MyApp());
 
