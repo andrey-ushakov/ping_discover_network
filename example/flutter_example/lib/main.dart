@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ping_discover_network/ping_discover_network.dart';
-import 'package:wifi/wifi.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
 void main() => runApp(MyApp());
 
@@ -38,12 +38,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     String ip;
     try {
-      ip = await Wifi.ip;
+      ip = await NetworkInfo().getWifiIP() ?? '';
       print('local ip:\t$ip');
     } catch (e) {
       final snackBar = SnackBar(
           content: Text('WiFi is not connected', textAlign: TextAlign.center));
-      Scaffold.of(ctx).showSnackBar(snackBar);
+      ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
       return;
     }
     setState(() {
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ..onError((dynamic e) {
         final snackBar = SnackBar(
             content: Text('Unexpected exception', textAlign: TextAlign.center));
-        Scaffold.of(ctx).showSnackBar(snackBar);
+        ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
       });
   }
 
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(height: 10),
                 Text('Local ip: $localIp', style: TextStyle(fontSize: 16)),
                 SizedBox(height: 15),
-                RaisedButton(
+                TextButton(
                     child: Text(
                         '${isDiscovering ? 'Discovering...' : 'Discover'}'),
                     onPressed: isDiscovering ? null : () => discover(context)),
