@@ -1,5 +1,6 @@
 name: flutter_example
 description: A new Flutter project.
+publish_to: none
 
 version: 1.0.0+1
 
@@ -12,7 +13,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   ping_discover_network:
     path: ../../
-  wifi: ^0.1.5
+  network_info_plus: ^3.0.5
 
 dev_dependencies:
   flutter_test:
